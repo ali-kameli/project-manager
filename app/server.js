@@ -23,10 +23,7 @@ module.exports = class Application {
     }
     configDataBase(DB_URL) {
         const mongoose = require('mongoose');
-        mongoose.connect(DB_URL, (err) => {
-            if (err) throw err;
-            return console.log(`Connected to MongoDB.`);
-        })
+        mongoose.connect(DB_URL).then(()=>console.log('Connected to MongoDB...'))
     }
     errorHandler() {
         //! 404 
@@ -38,15 +35,15 @@ module.exports = class Application {
             });
         })
         //! 500
-        this.#app.use((req, res, next, error) => {
+        this.#app.use((error, req, res, next) => {
             const status = error?.status || 500;
             const message = error?.message || 'Internal Server Error';
             return res.status(500).json({
                 status,
                 success: false,
                 message
-            })
-        })
+            });
+        });
     }
     createRoutes() {
         this.#app.get('/', (req, res, next) => {
