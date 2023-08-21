@@ -1,3 +1,5 @@
+const { AllRoutes } = require('./routes/router.routes');
+
 module.exports = class Application {
     #express = require('express');
     #app = this.#express();
@@ -23,7 +25,7 @@ module.exports = class Application {
     }
     configDataBase(DB_URL) {
         const mongoose = require('mongoose');
-        mongoose.connect(DB_URL).then(()=>console.log('Connected to MongoDB...'))
+        mongoose.connect(DB_URL).then(() => console.log('Connected to MongoDB...'))
     }
     errorHandler() {
         //! 404 
@@ -51,5 +53,6 @@ module.exports = class Application {
                 message: 'New App'
             })
         })
+        this.#app.use(AllRoutes)
     }
 }
