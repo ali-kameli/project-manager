@@ -1,7 +1,7 @@
-const authRoutes = require('./auth.routes');
-const projectRoutes = require('./project.routes');
-const teamRoutes = require('./team.routes');
-const userRoutes = require('./user.routes');
+const {authRoutes} = require('./auth.routes');
+const {projectRoutes} = require('./project.routes');
+const {teamRoutes} = require('./team.routes');
+const {userRoutes} = require('./user.routes');
 
 const router = require('express').Router();
 

@@ -1,0 +1,12 @@
+###register requst
+Post http://localhost:3000/auth/register
+
+Content-Type: application/json
+
+{
+    "username": "aliiii",
+    "email": "aaaaa",
+    "": "09385109370",
+    "password": "123456",
+    "confirm_password": "123456",
+}

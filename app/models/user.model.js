@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     first_name: {
         type: String,
-        required: true,
     },
     last_name: {
         type: String,
-        required: true,
     },
     username: {
         type: String,
@@ -25,8 +23,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     roles: {
-        type: String,
-        required: true,
+        type: [String],
         default: ["User"]
     },
     password: {
@@ -34,13 +31,11 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     skills: {
-        type: String,
-        required: true,
+        type: [String],
         default: []
     },
     team: {
-        type: String,
-        required: true,
+        type: [mongoose.Types.ObjectId],
         default: []
     },
 }, {
