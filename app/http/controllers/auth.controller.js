@@ -1,5 +1,6 @@
 const { hashPassword } = require("../../modules/functions");
 const { UserModel } = require('../../models/user.model');
+const bcrypt = require('bcryptjs');
 class AuthController {
     async register(req, res, next) {
         const { username, password, email, mobile } = req.body;
@@ -13,7 +14,24 @@ class AuthController {
         return res.json(user)
     }
 
-    login() { }
+    async login(req, res, next) {
+        try {
+            const { username, password } = req.body;
+            const user = await UserModel.findOne({ username });
+            if (!user) return res.status(404).json({ message: 'username or password is wrong !' })
+            const compareResult = bcrypt.compareSync(password, user.password);
+            if (!compareResult) throw res.status(401).json({ message: 'username or password is wrong !' });
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: 'login successfull',
+                token: ''
+            })
+            return res.json(req.body);
+        } catch (error) {
+            next(error)
+        }
+    }
     resetPassword() { }
 }
 

@@ -41,7 +41,19 @@ function registerValidator() {
             })
     ];
 }
-
+function loginValidation() {
+    return [
+        body('username').notEmpty().withMessage('username must be filled')
+            .matches(/^[a-z][a-z0-9_.]{2,}$/i).withMessage("Invalid username format")
+            .custom(async (username) => {
+                const user = await UserModel.findOne({ username });
+                if (!user) throw 'username or password is wrong !';
+                return true
+            }),
+        body('password').isLength({ min: 6, max: 16 }).withMessage('password must between 6 & 16 characters')
+    ]
+}
 module.exports = {
-    registerValidator
+    registerValidator,
+    loginValidation
 };
