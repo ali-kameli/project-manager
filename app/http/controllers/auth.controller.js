@@ -24,7 +24,6 @@ class AuthController {
             const token = tokenGenerator({ username });
             user.token = token;
             await user.save();
-            console.log(req.headers)
             return res.status(200).json({
                 status: 200,
                 success: true,
