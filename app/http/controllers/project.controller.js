@@ -1,5 +1,22 @@
+const { ProjectModel } = require("../../models/project.model");
+
 class ProjectController {
-    createProject() { }
+    async createProject(req, res, next) {
+        try {
+            const { title, text } = req.body;
+            const owner = req.user._id;
+            console.log(req.user);
+            const project = await ProjectModel.create({ title, text, owner });
+            if (!project) throw { staus: 400, message: "create project has been failed" };
+            return res.status(201).json({
+                status: 201,
+                success: true,
+                message: "create project successfully"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     getAllProject() { }
     getProjectByID() { }
     getProjectOfTeam() { }
