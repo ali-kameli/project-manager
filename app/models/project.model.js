@@ -22,7 +22,8 @@ const projectSchema = new mongoose.Schema({
     private: {
         type: Boolean,
         default: true
-    }
+    },
+    tags: { type: [String], default: [] },
 }, {
     timestamps: true
 })
