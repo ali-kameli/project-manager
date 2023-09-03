@@ -9,7 +9,9 @@ const router = require('express').Router();
 
 router.post('/create', fileUpload(), checkLogin, uploadFile, createProjectValidation(), expressValidationMapper, ProjectController.createProject)
 router.get('/list', checkLogin, ProjectController.getAllProject);
-router.post('/:id', checkLogin, ProjectController.getProjectByID);
+router.get('/:id', checkLogin, ProjectController.getProjectByID);
+router.delete('/remove/:id', checkLogin, ProjectController.removeProject);
+router.put('/edit/:id', checkLogin, ProjectController.updateProject);
 
 module.exports = {
     projectRoutes: router
