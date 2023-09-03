@@ -33,7 +33,21 @@ class ProjectController {
             next(error)
         }
     }
-    getProjectByID() { }
+    async getProjectByID(req, res, next) {
+        try {
+            const projectID = req.params.id;
+            const owner = req.user._id;
+            const project = await ProjectModel.findOne({ owner, _id: projectID });
+            if (!project) throw { status: 404, message: "project not found " };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                project
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
     getProjectOfTeam() { }
     getProjectOfUser() { }
     updateProject() { }

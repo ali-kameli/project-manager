@@ -8,6 +8,9 @@ const { uploadFile } = require('../modules/expressFileUpload');
 const router = require('express').Router();
 
 router.post('/create', fileUpload(), checkLogin, uploadFile, createProjectValidation(), expressValidationMapper, ProjectController.createProject)
+router.get('/list', checkLogin, ProjectController.getAllProject);
+router.post('/:id', checkLogin, ProjectController.getProjectByID);
+
 module.exports = {
     projectRoutes: router
 }
