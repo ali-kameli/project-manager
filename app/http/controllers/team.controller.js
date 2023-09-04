@@ -1,5 +1,22 @@
+const { TeamModel } = require("../../models/team.model");
+
 class TeamController {
-    createTeam() { }
+    async createTeam(req, res, next) {
+        try {
+            const { name, username, description } = req.body;
+            const owner = req.user._id;
+            const team = await TeamModel.create({ name, username, description, owner });
+            if (!team) throw { status: 500, message: "create team has been failed" };
+            return res.status(201).json({
+                status: 201,
+                success: true,
+                message: 'create team successfully',
+                team
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
     inviteUserToTeam() { }
     removeTeam() { }
     updateTeam() { }
