@@ -13,6 +13,7 @@ router.post('/profile-image',
     imageValidation(), expressValidationMapper, checkLogin,
     userController.uploadProfileImage);
 router.get('/requests', checkLogin, userController.getAllRequests)
+router.get('/requests/:status', checkLogin, userController.getRequestsByStatus)
 
 module.exports = {
     userRoutes: router

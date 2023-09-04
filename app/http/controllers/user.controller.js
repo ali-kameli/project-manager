@@ -65,7 +65,37 @@ class userController {
             next(error)
         }
     }
-    
+    async getRequestsByStatus(req, res, next) {
+        try {
+            const { status } = req.params;
+            const userID = req.user._id;
+            const requests = await UserModel.aggregate([
+                { $match: { _id: userID } },
+                {
+                    $project: {
+                        inviteRequest: 1,
+                        _id: 0,
+                        inviteRequest: {
+                            $filter: {
+                                input: "$inviteRequest",
+                                as: "request",
+                                cond: {
+                                    $eq: ["$$request.status", "pending"]
+                                }
+                            }
+                        }
+                    }
+                }
+            ])
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                requests
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     addSkills() { }
     editSkills() { }
     acceptInviteInTeam() { }
