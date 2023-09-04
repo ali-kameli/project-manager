@@ -96,9 +96,29 @@ class userController {
             next(error)
         }
     }
+    async changeRequestStatus(req, res, next) {
+        try {
+            const { id, status } = req.params;
+            const request = await UserModel.findOne({ "inviteRequest._id": id });
+            if (!request) throw { status: 404, message: "the request not found " };
+            const findRequest = request.inviteRequest.find(item => item.id == id);
+            if (findRequest.status !== "pending") throw { status: 400, message: 'this request was accepted or rejected' }
+            if (!["accepted", "rejected"].includes(status)) throw { status: 400, message: "the data is incorrect" };
+            const updateResult = await UserModel.updateOne({ "inviteRequest._id": id }, {
+                $set: { "inviteRequest.$.status": status }
+            })
+            if (updateResult.modifiedCount == 0) throw { status: 500, message: "update request failed" };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "update request was successfully"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     addSkills() { }
     editSkills() { }
-    acceptInviteInTeam() { }
     rejectInviteInTeam() { }
 }
 
