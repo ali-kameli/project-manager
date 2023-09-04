@@ -43,7 +43,6 @@ class userController {
             const userID = req.user._id;
             if (Object.keys(req.file).length == 0) throw { status: 400, message: 'please choose a picture' }
             const filePath = req.file?.path.substring(7);
-            console.log(filePath);
             const result = await UserModel.updateOne({ _id: userID }, { $set: { profile_image: filePath } });
             if (result.modifiedCount == 0) throw { status: 400, message: 'update failed' };
             return res.status(200).json({

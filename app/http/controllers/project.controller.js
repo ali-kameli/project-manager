@@ -10,7 +10,6 @@ class ProjectController {
         try {
             const { title, text, image, tags } = req.body;
             const owner = req.user._id;
-            console.log(tags);
             const project = await ProjectModel.create({ title, text, owner, image, tags });
             if (!project) throw { staus: 400, message: "create project has been failed" };
             return res.status(201).json({

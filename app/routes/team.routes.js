@@ -8,6 +8,7 @@ const { mongoIdValidator } = require('../http/validations/public');
 router.post('/create', checkLogin, creatTeamValidator(), expressValidationMapper, TeamController.createTeam)
 router.get('/list', checkLogin, TeamController.getListsOfTeam);
 router.get('/me', checkLogin, TeamController.getMyTeams);
+router.get('/invite/:teamID/:username', checkLogin, TeamController.inviteUserToTeam)
 router.get('/:id', checkLogin, mongoIdValidator(), TeamController.getTeamById);
 router.delete('/remove/:id', checkLogin, mongoIdValidator(), expressValidationMapper, TeamController.removeTeamById)
 
