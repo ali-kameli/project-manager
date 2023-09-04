@@ -9,7 +9,7 @@ exports.hashPassword = (password) => {
     return bcrypt.hashSync(password, salt);
 }
 exports.tokenGenerator = (payload) => {
-    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1 days" });
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "7 days" });
     return token
 }
 exports.verifyJWTToken = (token) => {

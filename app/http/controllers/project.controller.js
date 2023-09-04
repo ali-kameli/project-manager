@@ -73,9 +73,34 @@ class ProjectController {
             next(error);
         }
     }
+    async updateProject(req, res, next) {
+        try {
+            const owner = req.user._id;
+            const projectID = req.params.id;
+            const project = await this.findProject(projectID, owner);
+            const data = { ...req.body };
+            Object.entries(data).forEach(([key, value]) => {
+                if (!['title', 'text', 'tags'].includes(key)) delete data[key];
+                if (["", " ", 0, -1, undefined, null, NaN].includes(value)) delete data[key];
+                if (key == "tags" && (data['tags'].constructor === Array)) {
+                    data["tags"] = data["tags"].filter(val => {
+                        if (!["", " ", 0, -1, undefined, null, NaN].includes(val)) return val;
+                    })
+                }
+            })
+            const updateResult = await ProjectModel.updateOne({ _id: projectID }, { $set: data })
+            if (updateResult.modifiedCount == 0) throw { status: 400, message: 'update project has been failed' }
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "update successfull"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     getProjectOfTeam() { }
     getProjectOfUser() { }
-    updateProject() { }
 };
 
 module.exports = {
