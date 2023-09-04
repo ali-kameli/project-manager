@@ -17,6 +17,18 @@ class TeamController {
             next(error);
         }
     }
+    async getListsOfTeam(req, res, next) {
+        try {
+            const teams = await TeamModel.find();
+            return res.status(200).json({
+                success: true,
+                status: 200,
+                teams
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
     inviteUserToTeam() { }
     removeTeam() { }
     updateTeam() { }
