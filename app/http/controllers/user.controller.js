@@ -5,7 +5,7 @@ class userController {
     getProfile(req, res, next) {
         try {
             const user = req.user;
-            user.profile_image = createLinkForFiles(user.profile_image,req);
+            user.profile_image = createLinkForFiles(user.profile_image, req);
             return res.status(200).json({
                 status: 200,
                 success: true,
@@ -54,6 +54,18 @@ class userController {
             next(error)
         }
     }
+    async getAllRequests(req, res, next) {
+        try {
+            const userID = req.user._id;
+            const { inviteRequest } = await UserModel.findById(userID, { inviteRequest: 1 })?.inviteRequest || [];
+            return res.json({
+                requests: inviteRequest || []
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    
     addSkills() { }
     editSkills() { }
     acceptInviteInTeam() { }
