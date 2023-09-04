@@ -1,5 +1,6 @@
 const autoBind = require("auto-bind");
 const { ProjectModel } = require("../../models/project.model");
+const { createLinkForFiles } = require("../../modules/functions");
 
 class ProjectController {
     constructor() {
@@ -25,6 +26,9 @@ class ProjectController {
         try {
             const owner = req.user._id;
             const projects = await ProjectModel.find({ owner });
+            for (const project of projects) {
+                project.image = createLinkForFiles(project.image, req);
+            }
             if (!projects) throw { status: 404, message: 'project not found' };
             return res.status(200).json({
                 status: 200,
@@ -47,7 +51,7 @@ class ProjectController {
             const projectID = req.params.id;
             const owner = req.user._id;
             const project = await this.findProject(projectID, owner);
-            console.log(project);
+            project.image = createLinkForFiles(project.image, req);
             return res.status(200).json({
                 status: 200,
                 success: true,
@@ -94,6 +98,23 @@ class ProjectController {
                 status: 200,
                 success: true,
                 message: "update successfull"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async updateProjectImage(req, res, next) {
+        try {
+            const { image } = req.body;
+            const owner = req.user._id;
+            const projectID = req.params.id;
+            await this.findProject(projectID, owner);
+            const updateResult = await ProjectModel.updateOne({ _id: projectID }, { $set: { image } });
+            if (updateResult.modifiedCount == 0) throw { status: 400, message: 'upload project image has been failed' };
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: 'update project image successfully'
             })
         } catch (error) {
             next(error)

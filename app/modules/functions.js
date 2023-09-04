@@ -30,3 +30,6 @@ exports.createUploadPath = () => {
     fs.mkdirSync(uploadPath, { recursive: true });
     return path.join("public", "upload", year, month, day);
 }
+exports.createLinkForFiles = (fileAddress,req) => {
+    return (req.protocol + '://' + req.get('host') + '/' + fileAddress).replaceAll('\\', '/')
+}
