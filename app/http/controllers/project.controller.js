@@ -1,6 +1,10 @@
+const autoBind = require("auto-bind");
 const { ProjectModel } = require("../../models/project.model");
 
 class ProjectController {
+    constructor() {
+        autoBind(this);
+    }
     async createProject(req, res, next) {
         try {
             const { title, text, image, tags } = req.body;
@@ -43,6 +47,7 @@ class ProjectController {
             const projectID = req.params.id;
             const owner = req.user._id;
             const project = await this.findProject(projectID, owner);
+            console.log(project);
             return res.status(200).json({
                 status: 200,
                 success: true,

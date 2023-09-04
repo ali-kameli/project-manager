@@ -4,14 +4,15 @@ const { checkLogin } = require('../http/middlewares/autoLogin');
 const { expressValidationMapper } = require('../http/middlewares/checkErrors');
 const { createProjectValidation } = require('../http/validations/project.validation');
 const { uploadFile } = require('../modules/expressFileUpload');
+const { mongoIdValidator } = require('../http/validations/public');
 
 const router = require('express').Router();
 
 router.post('/create', fileUpload(), checkLogin, uploadFile, createProjectValidation(), expressValidationMapper, ProjectController.createProject)
 router.get('/list', checkLogin, ProjectController.getAllProject);
-router.get('/:id', checkLogin, ProjectController.getProjectByID);
-router.delete('/remove/:id', checkLogin, ProjectController.removeProject);
-router.put('/edit/:id', checkLogin, ProjectController.updateProject);
+router.get('/:id', checkLogin,mongoIdValidator(),expressValidationMapper, ProjectController.getProjectByID);
+router.delete('/:id', checkLogin,mongoIdValidator(),expressValidationMapper, ProjectController.removeProject);
+router.put('/edit/:id', checkLogin,mongoIdValidator(),expressValidationMapper, ProjectController.updateProject);
 
 module.exports = {
     projectRoutes: router
